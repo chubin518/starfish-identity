@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.starfish.identity.dao.IdentityClientDao">
+  <resultMap id="BaseResultMap" type="org.starfish.identity.entity.IdentityClient">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="client_id" jdbcType="VARCHAR" property="clientId" />
+    <result column="client_secret" jdbcType="VARCHAR" property="clientSecret" />
+    <result column="scope" jdbcType="VARCHAR" property="scope" />
+    <result column="grant_types" jdbcType="VARCHAR" property="grantTypes" />
+    <result column="callback_uri" jdbcType="VARCHAR" property="callbackUri" />
+    <result column="authorities" jdbcType="VARCHAR" property="authorities" />
+    <result column="expire_seconds" jdbcType="INTEGER" property="expireSeconds" />
+    <result column="refresh_seconds" jdbcType="INTEGER" property="refreshSeconds" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_user" jdbcType="INTEGER" property="createUser" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_user" jdbcType="INTEGER" property="updateUser" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_locked" jdbcType="TINYINT" property="isLocked" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    <result column="lock_time" jdbcType="TIMESTAMP" property="lockTime" />
+  </resultMap>
+</mapper>

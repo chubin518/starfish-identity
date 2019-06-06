@@ -1,0 +1,73 @@
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    # druid 连接池配置
+    druid:
+      # 测试语句
+      validation-query: SELECT 1 FROM DUAL
+      # 配置连接池初始大小，最小，最大
+      initial-size: 10
+      min-idle: 10
+      max-active: 200
+      # 配置一个连接在连接池内的最小生存时间 单位毫秒
+      min-evictable-idle-time-millis: 180000
+      test-on-borrow: false
+      test-while-idle: true
+      remove-abandoned: true
+      remove-abandoned-timeout: 1800
+      log-abandoned: true
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      max-open-prepared-statements: 100
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,log4j
+      # ͨ通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connection-properties:  druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      # StatViewServlet配置
+      stat-view-servlet:
+        url-pattern: /druid/*
+        login-password: starfish123456
+        login-username: starfish
+        reset-enable: false
+        enabled: true
+        # WebStatFilter配置
+      web-stat-filter:
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+        url-pattern: /*
+        enabled: true
+
+# 日志配置
+logging:
+  path: log
+  config: classpath:log/logback.xml
+
+# mybatis 配置
+mybatis:
+  type-aliases-package: org.starfish.identity.entity
+  mapper-locations: classpath:org/starfish/identity/dao/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-handlers-package: org.starfish.identity.dao.typehandlers
+
+# pagehelper 配置
+pagehelper:
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+  helper-dialect: mysql
+
+# 自定义常量配置
+constant:
+  security:
+    algorithm-name: md5
+    iterations: 3
+    lock-minute: 5
+
+
+
+
+
