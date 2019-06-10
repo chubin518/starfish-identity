@@ -20,4 +20,11 @@ public class IdentityUserServiceImpl extends BaseServiceImpl<IdentityUser> imple
                 .andEqualTo(IdentityUser::getIsDeleted, 0);
         return userDao.selectOneByExample(weekend);
     }
+
+    @Override
+    public int updateByAccount(IdentityUser identityUser, String account) {
+        Weekend<IdentityUser> weekend = new Weekend<>(IdentityUser.class);
+        weekend.weekendCriteria().andEqualTo(IdentityUser::getAccount, account);
+        return userDao.updateByExampleSelective(identityUser, account);
+    }
 }

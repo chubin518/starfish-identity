@@ -7,21 +7,22 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.starfish.identity.admin.utils.ConstantUtils;
+import org.starfish.identity.admin.utils.ConstantPropertyUtils;
 import org.starfish.identity.entity.IdentityUser;
 import org.starfish.identity.service.IdentityUserService;
 
 import java.time.LocalDateTime;
 
-public class IdentityShiroRealm extends AuthorizingRealm {
+public class IdentityAuthorizeRealm extends AuthorizingRealm {
     @Autowired
     private IdentityUserService userService;
 
     @Autowired
-    private ConstantUtils constantUtils;
+    private ConstantPropertyUtils constantPropertyUtils;
 
     /**
      * 授权
+     *
      * @param principalCollection
      * @return
      */
@@ -33,6 +34,7 @@ public class IdentityShiroRealm extends AuthorizingRealm {
 
     /**
      * 认证
+     *
      * @param authenticationToken
      * @return
      * @throws AuthenticationException
@@ -45,8 +47,8 @@ public class IdentityShiroRealm extends AuthorizingRealm {
             throw new UnknownAccountException(String.format("用户名：%s 不存在", account));
         }
 
-        if (identityUser.getIsLocked() == 1 && LocalDateTime.now().isBefore(identityUser.getLockTime().plusMinutes(constantUtils.getLockMinutes()))) {
-            throw new LockedAccountException(String.format("用户名：%s 锁定%s分钟", account, constantUtils.getLockMinutes()));
+        if (identityUser.getIsLocked() == 1 && LocalDateTime.now().isBefore(identityUser.getLockTime().plusMinutes(constantPropertyUtils.getLockMinutes()))) {
+            throw new LockedAccountException(String.format("用户名：%s 锁定%s分钟", account, constantPropertyUtils.getLockMinutes()));
         }
 
         return new SimpleAuthenticationInfo(identityUser,

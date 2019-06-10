@@ -1,12 +1,13 @@
 package org.starfish.identity.admin.utils;
 
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ *
+ */
 @Component
-@Getter
-public class ConstantUtils {
+public class ConstantPropertyUtils {
     /**
      * 加密次数
      */
@@ -25,4 +26,15 @@ public class ConstantUtils {
     @Value("${constant.security.lock-minute}")
     private Integer lockMinutes;
 
+    public Integer getLockMinutes() {
+        return lockMinutes;
+    }
+
+    public Integer getIterations() {
+        return Iterations;
+    }
+
+    public String getAlgorithmName() {
+        return algorithmName;
+    }
 }

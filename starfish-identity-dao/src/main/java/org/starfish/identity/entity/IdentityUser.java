@@ -59,7 +59,7 @@ public class IdentityUser {
     /**
      * 生日
      */
-    private LocalDateTime birthday;
+    private String birthday;
 
     /**
      * 性别
@@ -113,6 +113,18 @@ public class IdentityUser {
      */
     @Column(name = "lock_time")
     private LocalDateTime lockTime;
+
+    /**
+     * 最后登录时间
+     */
+    @Column(name = "login_time")
+    private LocalDateTime loginTime;
+
+    /**
+     * 最后登录地址
+     */
+    @Column(name = "login_address")
+    private String loginAddress;
 
     public static final String ID = "id";
 
@@ -189,4 +201,12 @@ public class IdentityUser {
     public static final String LOCK_TIME = "lockTime";
 
     public static final String DB_LOCK_TIME = "lock_time";
+
+    public static final String LOGIN_TIME = "loginTime";
+
+    public static final String DB_LOGIN_TIME = "login_time";
+
+    public static final String LOGIN_ADDRESS = "loginAddress";
+
+    public static final String DB_LOGIN_ADDRESS = "login_address";
 }

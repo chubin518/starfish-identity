@@ -53,12 +53,6 @@ mybatis:
     map-underscore-to-camel-case: true
   type-handlers-package: org.starfish.identity.dao.typehandlers
 
-# pagehelper 配置
-pagehelper:
-  reasonable: true
-  support-methods-arguments: true
-  params: count=countSql
-  helper-dialect: mysql
 
 # 自定义常量配置
 constant:

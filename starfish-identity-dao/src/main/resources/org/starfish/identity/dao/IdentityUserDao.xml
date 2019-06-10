@@ -14,7 +14,7 @@
     <result column="real_name" jdbcType="VARCHAR" property="realName" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="birthday" jdbcType="VARCHAR" property="birthday" />
     <result column="sex" jdbcType="TINYINT" property="sex" />
     <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
     <result column="create_user" jdbcType="INTEGER" property="createUser" />
@@ -24,5 +24,7 @@
     <result column="is_locked" jdbcType="TINYINT" property="isLocked" />
     <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
     <result column="lock_time" jdbcType="TIMESTAMP" property="lockTime" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="login_address" jdbcType="VARCHAR" property="loginAddress" />
   </resultMap>
 </mapper>

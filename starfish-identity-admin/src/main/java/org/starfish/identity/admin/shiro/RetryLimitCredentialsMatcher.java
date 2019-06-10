@@ -7,7 +7,7 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.starfish.identity.admin.utils.ConstantUtils;
+import org.starfish.identity.admin.utils.ConstantPropertyUtils;
 import org.starfish.identity.entity.IdentityUser;
 import org.starfish.identity.service.IdentityUserService;
 
@@ -20,7 +20,7 @@ public class RetryLimitCredentialsMatcher extends HashedCredentialsMatcher {
     private IdentityUserService userService;
 
     @Autowired
-    private ConstantUtils constantUtils;
+    private ConstantPropertyUtils constantPropertyUtils;
 
     private Cache<String, AtomicInteger> passwordRetryCache;
 
@@ -37,7 +37,7 @@ public class RetryLimitCredentialsMatcher extends HashedCredentialsMatcher {
             passwordRetryCache.put(identityUser.getAccount(), retryCount);
         }
         // 是否锁定过期
-        boolean isExpire = identityUser.getIsLocked() == 1 && LocalDateTime.now().isAfter(identityUser.getLockTime().plusMinutes(constantUtils.getLockMinutes()));
+        boolean isExpire = identityUser.getIsLocked() == 1 && LocalDateTime.now().isAfter(identityUser.getLockTime().plusMinutes(constantPropertyUtils.getLockMinutes()));
         if (isExpire) {
             if (identityUser.getIsLocked() == 1) {
                 identityUser.setIsLocked((byte) 0);
@@ -46,7 +46,7 @@ public class RetryLimitCredentialsMatcher extends HashedCredentialsMatcher {
             }
             passwordRetryCache.remove(identityUser.getAccount());
         } else {
-            if (retryCount.incrementAndGet() > constantUtils.getLockMinutes()) {
+            if (retryCount.incrementAndGet() > constantPropertyUtils.getLockMinutes()) {
                 if (identityUser.getIsLocked() == 0) {
                     identityUser.setIsLocked((byte) 1);
                     identityUser.setLockTime(LocalDateTime.now());
