@@ -49,7 +49,11 @@
             <artifactId>shiro-ehcache</artifactId>
             <version>1.4.1</version>
         </dependency>
-
+        <!-- jwt -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+        </dependency>
         <!--lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
