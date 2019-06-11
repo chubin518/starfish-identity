@@ -34,10 +34,10 @@ public class OauthController {
         String error = "";
         try {
             subject.login(token);
-            IdentityUser identityUser = new IdentityUser();
-            identityUser.setLoginTime(LocalDateTime.now());
-            identityUser.setLoginAddress(IPAddressUtils.getIpAddr(request));
-            userService.updateByAccount(identityUser, loginParam.getUserName());
+//            IdentityUser identityUser = new IdentityUser();
+//            identityUser.setLoginTime(LocalDateTime.now());
+//            identityUser.setLoginAddress(IPAddressUtils.getIpAddr(request));
+//            userService.updateByAccount(identityUser, loginParam.getUserName());
         } catch (UnknownAccountException ex) {
             return CommonResult.failed("用户名不存在");
         } catch (IncorrectCredentialsException ex) {

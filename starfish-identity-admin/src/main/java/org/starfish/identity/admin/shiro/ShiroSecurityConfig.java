@@ -7,6 +7,8 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,9 +20,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@Configuration
+//@Configuration
 public class ShiroSecurityConfig {
 
+    private static final Logger LOGGER=LoggerFactory.getLogger(ShiroSecurityConfig.class);
     @Autowired
     private ConstantPropertyUtils propertyUtils;
 
@@ -61,6 +64,8 @@ public class ShiroSecurityConfig {
     public Realm realm(CredentialsMatcher credentialsMatcher) {
         IdentityAuthorizeRealm shiroRealm = new IdentityAuthorizeRealm();
         shiroRealm.setCredentialsMatcher(credentialsMatcher);
+//        shiroRealm.setAuthenticationCacheName("authenticationCache");
+//        shiroRealm.setAuthorizationCacheName("authorizationCache");
         return shiroRealm;
     }
 

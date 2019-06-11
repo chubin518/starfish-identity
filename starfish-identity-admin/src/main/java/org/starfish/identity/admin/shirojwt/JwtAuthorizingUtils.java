@@ -1,16 +1,14 @@
-package org.starfish.identity.admin.jwt;
-
-import java.util.Date;
+package org.starfish.identity.admin.shirojwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-/**
- * jwt token 工具类
- */
-public class JwtUtils {
+import java.util.Date;
+
+public class JwtAuthorizingUtils {
+
 
     /**
      * token 过期时间
@@ -29,7 +27,7 @@ public class JwtUtils {
         try {
             // 根据密码生成JWT校验器
             Algorithm algorithm = Algorithm.HMAC256(password);
-            JWTVerifier verifier = JWT.require(algorithm).withClaim("account", account).build();
+            JWTVerifier verifier = JWT.require(algorithm).withClaim(JwtConstants.USERNAME, account).build();
             // 校验token
             DecodedJWT jwt = verifier.verify(token);
             return true;
@@ -47,7 +45,7 @@ public class JwtUtils {
     public static String getInfoToken(String token) {
         try {
             DecodedJWT jwt = JWT.decode(token);
-            return jwt.getClaim("account").asString();
+            return jwt.getClaim(JwtConstants.USERNAME).asString();
         } catch (Exception e) {
             return null;
         }
@@ -64,7 +62,7 @@ public class JwtUtils {
         Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         Algorithm algorithm = Algorithm.HMAC256(password);
         return JWT.create()
-                .withClaim("account", account)
+                .withClaim(JwtConstants.USERNAME, account)
                 .withExpiresAt(date)
                 .sign(algorithm);
     }

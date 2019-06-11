@@ -6,7 +6,10 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.starfish.identity.admin.jwt.JwtRealm;
 import org.starfish.identity.admin.utils.ConstantPropertyUtils;
 import org.starfish.identity.entity.IdentityUser;
 import org.starfish.identity.service.IdentityUserService;
@@ -14,6 +17,7 @@ import org.starfish.identity.service.IdentityUserService;
 import java.time.LocalDateTime;
 
 public class IdentityAuthorizeRealm extends AuthorizingRealm {
+    private static final Logger LOGGER = LoggerFactory.getLogger(IdentityAuthorizeRealm.class);
     @Autowired
     private IdentityUserService userService;
 
@@ -29,6 +33,7 @@ public class IdentityAuthorizeRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        LOGGER.info("doGetAuthorizationInfo");
         return authorizationInfo;
     }
 

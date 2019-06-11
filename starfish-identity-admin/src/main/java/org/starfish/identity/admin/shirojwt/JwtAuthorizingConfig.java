@@ -1,11 +1,4 @@
-package org.starfish.identity.admin.jwt;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.Filter;
+package org.starfish.identity.admin.shirojwt;
 
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -20,9 +13,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
-//@Configuration
-public class JwtShiroConfig {
+import javax.servlet.Filter;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
+@Configuration
+public class JwtAuthorizingConfig {
     /**
      * EhCache 配置
      *
@@ -37,15 +35,14 @@ public class JwtShiroConfig {
 
     @Bean
     public Realm realm() {
-        JwtRealm realm = new JwtRealm();
-        return realm;
+        return new JwtAuthorizingRealm();
     }
 
     @Bean
     public DefaultWebSecurityManager securityManager(List<Realm> realms, CacheManager cacheManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealms(realms);
         securityManager.setCacheManager(cacheManager);
+        securityManager.setRealms(realms);
         // 关闭自带session
         DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
         DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
@@ -59,16 +56,16 @@ public class JwtShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        shiroFilterFactoryBean.setLoginUrl("/jwt/login");
+        shiroFilterFactoryBean.setLoginUrl("/jwt/jwtlogin");
         shiroFilterFactoryBean.setSuccessUrl("/");
         shiroFilterFactoryBean.setUnauthorizedUrl("/jwt/403");
         Map<String, Filter> filterMap = new HashMap<>();
-        filterMap.put("jwt", new JwtFilter());
+        filterMap.put("jwt", new JwtAuthenticationFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
         Map<String, String> filterRules = new LinkedHashMap<>();
         filterRules.put("/jwt/logout", "logout");
         // anon:所有url都都可以匿名访问
-        filterRules.put("/jwt/login", "anon");
+        filterRules.put("/jwt/jwtlogin", "anon");
         filterRules.put("/static/**", "anon");
         filterRules.put("/favicon.ico", "anon");
         filterRules.put("/druid/**", "anon");

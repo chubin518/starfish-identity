@@ -1,4 +1,4 @@
-package org.starfish.identity.admin.jwt;
+package org.starfish.identity.admin.shirojwt;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -12,44 +12,36 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.starfish.identity.admin.jwt.JwtUtils;
 import org.starfish.identity.entity.IdentityUser;
 import org.starfish.identity.service.IdentityUserService;
 
-public class JwtRealm extends AuthorizingRealm {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(JwtRealm.class);
+public class JwtAuthorizingRealm extends AuthorizingRealm {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthorizingRealm.class);
 
     @Autowired
     private IdentityUserService userService;
 
-    /**
-     * 必须重写此方法
-     */
     @Override
     public boolean supports(AuthenticationToken token) {
-        return token instanceof JwtToken;
+        return token instanceof JwtAuthenticationToken;
     }
 
-    /**
-     * 授权 验证用户权限时调用此方法
-     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String username = JwtUtils.getInfoToken(principals.toString());
+        LOGGER.info("doGetAuthorizationInfo 获取权限信息 ：" + username);
         // 获取权限信息
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.addStringPermission("home:view");
         return simpleAuthorizationInfo;
     }
 
-    /**
-     * 认证 验证用户名密码的正确性，错误抛出异常即可
-     */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String jwtToken = token.getCredentials().toString();
-        LOGGER.info("doGetAuthenticationInfo 登录认证 ："+jwtToken);
         String account = JwtUtils.getInfoToken(jwtToken);
+        LOGGER.info("doGetAuthenticationInfo 登录认证 ：" + jwtToken);
         if (StringUtils.isEmpty(account)) {
             throw new AuthenticationException("token无效");
         }
@@ -62,5 +54,4 @@ public class JwtRealm extends AuthorizingRealm {
         }
         return new SimpleAuthenticationInfo(jwtToken, jwtToken, getName());
     }
-
 }
