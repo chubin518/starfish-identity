@@ -10,11 +10,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Component
-@RestControllerAdvice(annotations = RestController.class)
+@RestControllerAdvice
 public class RestExceptionHandler {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(RestExceptionHandler.class);
