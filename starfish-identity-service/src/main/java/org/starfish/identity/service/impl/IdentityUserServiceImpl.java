@@ -15,9 +15,8 @@ public class IdentityUserServiceImpl extends BaseServiceImpl<IdentityUser> imple
     @Override
     public IdentityUser findUserByAccount(String account) {
         Weekend<IdentityUser> weekend = new Weekend<>(IdentityUser.class);
-        weekend.weekendCriteria()
-                .andEqualTo(IdentityUser::getAccount, account)
-                .andEqualTo(IdentityUser::getIsDeleted, 0);
+        weekend.weekendCriteria().andEqualTo(IdentityUser::getAccount, account).andEqualTo(IdentityUser::getIsDeleted,
+                0);
         return userDao.selectOneByExample(weekend);
     }
 

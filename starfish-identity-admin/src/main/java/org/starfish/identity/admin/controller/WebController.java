@@ -35,66 +35,69 @@ public class WebController {
     private ConstantPropertyUtils propertyUtils;
 
     @PostMapping("/login")
-    public ResponseBean login(@RequestParam("username") String username, @RequestParam("password") String password) {
+    public ResponseBean<String> login(@RequestParam("username") String username,
+            @RequestParam("password") String password) {
         IdentityUser userBean = userService.findUserByAccount(username);
-        SimpleHash simpleHash = new SimpleHash(propertyUtils.getAlgorithmName(), password, userBean.getSalt(), propertyUtils.getIterations());
+        SimpleHash simpleHash = new SimpleHash(propertyUtils.getAlgorithmName(), password, userBean.getSalt(),
+                propertyUtils.getIterations());
         String newPassword = simpleHash.toString();
         if (null != userBean && userBean.getPassword().equals(newPassword)) {
-            return new ResponseBean(200, "Login success", JwtUtils.create(username, userBean.getPassword()));
+            return ResponseBean.success(JwtUtils.create(username, userBean.getPassword()));
         } else {
             throw new UnauthorizedException();
         }
     }
 
     @PostMapping("/jwtlogin")
-    public ResponseBean jwtLogin(@RequestParam("username") String username, @RequestParam("password") String password) {
+    public ResponseBean<String> jwtLogin(@RequestParam("username") String username,
+            @RequestParam("password") String password) {
         IdentityUser userBean = userService.findUserByAccount(username);
-        SimpleHash simpleHash = new SimpleHash(propertyUtils.getAlgorithmName(), password, userBean.getSalt(), propertyUtils.getIterations());
+        SimpleHash simpleHash = new SimpleHash(propertyUtils.getAlgorithmName(), password, userBean.getSalt(),
+                propertyUtils.getIterations());
         String jwt = JwtUtils.create(username, simpleHash.toString());
         JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(jwt);
         try {
             Subject subject = SecurityUtils.getSubject();
             subject.login(jwtAuthenticationToken);
             boolean isSuc = subject.isAuthenticated();
-            return new ResponseBean(200, String.valueOf(isSuc), jwt);
+            return ResponseBean.success(jwt);
         } catch (Exception ex) {
             throw new UnauthorizedException();
         }
     }
 
-
     @GetMapping("article")
-    public ResponseBean article() {
+    public ResponseBean<String> article() {
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated()) {
-            return new ResponseBean(200, "You are already logged in", null);
+            return ResponseBean.success("You are already logged in");
         } else {
-            return new ResponseBean(200, "You are guest", null);
+            return ResponseBean.success("You are guest");
         }
     }
 
     @GetMapping("/require_auth")
     @RequiresAuthentication
-    public ResponseBean requireAuth() {
-        return new ResponseBean(200, "You are authenticated", null);
+    public ResponseBean<String> requireAuth() {
+        return ResponseBean.success("You are authenticated");
     }
 
     @GetMapping("/require_role")
     @RequiresRoles("admin")
     public ResponseBean requireRole() {
-        return new ResponseBean(200, "You are visiting require_role", null);
+        return ResponseBean.success("You are visiting require_role");
     }
 
     @GetMapping("/require_permission")
-    @RequiresPermissions(logical = Logical.AND, value = {"view", "edit"})
+    @RequiresPermissions(logical = Logical.AND, value = { "view", "edit" })
     public ResponseBean requirePermission() {
-        return new ResponseBean(200, "You are visiting permission require edit,view", null);
+        return ResponseBean.success("You are visiting permission require edit,view");
     }
 
     @RequestMapping(path = "/401")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseBean unauthorized() {
-        return new ResponseBean(401, "Unauthorized", null);
+        return ResponseBean.unAuthorized("Unauthorized");
     }
 
 }

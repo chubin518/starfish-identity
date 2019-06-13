@@ -72,6 +72,7 @@ public class JwtShiroConfig {
         filterRules.put("/static/**", "anon");
         filterRules.put("/favicon.ico", "anon");
         filterRules.put("/druid/**", "anon");
+        
         filterRules.put("/**", "jwt");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterRules);
         return shiroFilterFactoryBean;

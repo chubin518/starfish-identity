@@ -1,42 +1,71 @@
 package org.starfish.identity.utils;
 
-public class ResponseBean {
-  // http 状态码
-  private int code;
+import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
 
-  // 返回信息
-  private String msg;
+/**
+ * 统一响应模型
+ */
+@Getter
+@Setter
+public class ResponseBean<E> implements Serializable {
+  private static final long serialVersionUID = 1L;
+  private String status;
+  private String message;
+  private E data;
 
-  // 返回的数据
-  private Object data;
-
-  public ResponseBean(int code, String msg, Object data) {
-    this.code = code;
-    this.msg = msg;
+  public ResponseBean(String status, String message, E data) {
+    this.status = status;
+    this.message = message;
     this.data = data;
   }
 
-  public int getCode() {
-    return code;
+  public static <E> ResponseBean<E> success(E body) {
+    return new ResponseBean<>(StandardCode.SUCCESS.toString(), "", body);
   }
 
-  public void setCode(int code) {
-    this.code = code;
+  public static <E> ResponseBean<E> notFound(String message) {
+    return new ResponseBean<>(StandardCode.NOT_FOUND.toString(), message, null);
   }
 
-  public String getMsg() {
-    return msg;
+  public static <E> ResponseBean<E> conflict(String message) {
+    return new ResponseBean<>(StandardCode.CONFLICT.toString(), message, null);
   }
 
-  public void setMsg(String msg) {
-    this.msg = msg;
+  public static <E> ResponseBean<E> locked(String message) {
+    return new ResponseBean<>(StandardCode.LOCKED.toString(), message, null);
   }
 
-  public Object getData() {
-    return data;
+  public static <E> ResponseBean<E> unsupportedMediaType(String message) {
+    return new ResponseBean<>(StandardCode.UNSUPPORTED_MEDIA_TYPE.toString(), message, null);
   }
 
-  public void setData(Object data) {
-    this.data = data;
+  public static <E> ResponseBean<E> badRequest(String message) {
+    return new ResponseBean<>(StandardCode.BAD_REQUEST.toString(), message, null);
+  }
+
+  public static <E> ResponseBean<E> forbidden(String message) {
+    return new ResponseBean<>(StandardCode.FORBIDDEN.toString(), message, null);
+  }
+
+  public static <E> ResponseBean<E> unAuthorized(String message) {
+    return new ResponseBean<>(StandardCode.UNAUTHORIZED.toString(), message, null);
+  }
+
+  public static <E> ResponseBean<E> serverError(String message) {
+    return new ResponseBean<>(StandardCode.INTERNAL_SERVER_ERROR.toString(), message, null);
+  }
+
+  public static <E> ResponseBean<E> notImplemented(String message) {
+    return new ResponseBean<>(StandardCode.NOT_IMPLEMENTED.toString(), message, null);
+  }
+
+  public static <E> ResponseBean<E> unknown(String message) {
+    return new ResponseBean<>(StandardCode.UNKNOWN.toString(), message, null);
+  }
+
+  public static <E> ResponseBean<E> customFail(String code, String message) {
+    return new ResponseBean<>(code, message, null);
   }
 }
