@@ -19,7 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@Configuration
+//@Configuration
 public class JwtAuthorizingConfig {
     /**
      * EhCache 配置
@@ -73,7 +73,6 @@ public class JwtAuthorizingConfig {
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterRules);
         return shiroFilterFactoryBean;
     }
-
 
     @Bean
     @DependsOn("lifecycleBeanPostProcessor")

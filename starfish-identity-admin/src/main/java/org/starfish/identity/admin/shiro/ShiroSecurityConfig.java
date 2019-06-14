@@ -20,7 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-//@Configuration
+@Configuration
 public class ShiroSecurityConfig {
 
     private static final Logger LOGGER=LoggerFactory.getLogger(ShiroSecurityConfig.class);
@@ -105,7 +105,7 @@ public class ShiroSecurityConfig {
         filters.put("/favicon.ico", "anon");
         filters.put("/druid/**", "anon");
         //  authc:所有url都必须认证通过才可以访问
-        filters.put("/**", "authc");
+        filters.put("/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filters);
         return shiroFilterFactoryBean;
     }

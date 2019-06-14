@@ -18,7 +18,6 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         return currentDao;
     }
 
-
     @Override
     public int deleteByPrimaryKey(Object key) {
         return currentDao.deleteByPrimaryKey(key);

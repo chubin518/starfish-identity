@@ -30,13 +30,12 @@ public class IdentityTenant {
     private String remark;
 
     /**
-     * 联系电话
+     * 联系方式
      */
-    @Column(name = "contact_number")
-    private String contactNumber;
+    private String contact;
 
     /**
-     * 联系地址
+     * 地址
      */
     private String address;
 
@@ -91,9 +90,9 @@ public class IdentityTenant {
 
     public static final String DB_REMARK = "remark";
 
-    public static final String CONTACT_NUMBER = "contactNumber";
+    public static final String CONTACT = "contact";
 
-    public static final String DB_CONTACT_NUMBER = "contact_number";
+    public static final String DB_CONTACT = "contact";
 
     public static final String ADDRESS = "address";
 

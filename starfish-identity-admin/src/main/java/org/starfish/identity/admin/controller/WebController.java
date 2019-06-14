@@ -62,7 +62,7 @@ public class WebController {
             boolean isSuc = subject.isAuthenticated();
             return ResponseBean.success(jwt);
         } catch (Exception ex) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException(ex.getMessage());
         }
     }
 

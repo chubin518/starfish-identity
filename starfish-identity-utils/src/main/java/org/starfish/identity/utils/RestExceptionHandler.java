@@ -16,43 +16,46 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class RestExceptionHandler {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(RestExceptionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestExceptionHandler.class);
 
-  /**
-   * shiro 认证授权异常
-   */
-  @ExceptionHandler(ShiroException.class)
-  public ResponseBean<Object> handle401(ShiroException e) {
-    LOGGER.error("UNAUTHORIZED", e);
-    return ResponseBean.unAuthorized(e.getMessage());
-  }
-
-  /**
-   * 参数验证异常
-   */
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseBean<Object> validate(MethodArgumentNotValidException ex) {
-    BindingResult bindingResult = ex.getBindingResult();
-    if (bindingResult.hasErrors()) {
-      FieldError error = bindingResult.getFieldError();
-      if (null != error) {
-        return ResponseBean.badRequest(error.getDefaultMessage());
-      }
+    /**
+     * shiro 认证授权异常
+     */
+    @ExceptionHandler(ShiroException.class)
+    public ResponseBean<Object> handle401(ShiroException e) {
+        LOGGER.error("UNAUTHORIZED", e);
+        return ResponseBean.unAuthorized(e.getMessage());
     }
-    return ResponseBean.badRequest("参数有误");
-  }
 
-  /**
-   * 其他异常
-   * 
-   * @param request
-   * @param ex
-   * @return
-   */
-  @ExceptionHandler(Exception.class)
-  public ResponseBean<Object> exception(HttpServletRequest request, Throwable ex) {
-    LOGGER.error("UNAUTHORIZED", ex);
-    Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
-    return ResponseBean.customFail(statusCode.toString(), ex.getMessage());
-  }
+    /**
+     * 参数验证异常
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseBean<Object> validate(MethodArgumentNotValidException ex) {
+        BindingResult bindingResult = ex.getBindingResult();
+        if (bindingResult.hasErrors()) {
+            FieldError error = bindingResult.getFieldError();
+            if (null != error) {
+                return ResponseBean.badRequest(error.getDefaultMessage());
+            }
+        }
+        return ResponseBean.badRequest("参数有误");
+    }
+
+    /**
+     * 其他异常
+     *
+     * @param request
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseBean<Object> exception(HttpServletRequest request, Throwable ex) {
+        LOGGER.error("UNAUTHORIZED", ex);
+        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        if (statusCode == null) {
+            statusCode = 500;
+        }
+        return ResponseBean.customFail(statusCode.toString(), ex.getMessage());
+    }
 }

@@ -21,8 +21,8 @@ public class ResponseBean<E> implements Serializable {
     this.data = data;
   }
 
-  public static <E> ResponseBean<E> success(E body) {
-    return new ResponseBean<>(StandardCode.SUCCESS.toString(), "", body);
+  public static <E> ResponseBean<E> success(E data) {
+    return new ResponseBean<>(StandardCode.SUCCESS.toString(), "", data);
   }
 
   public static <E> ResponseBean<E> notFound(String message) {
@@ -67,5 +67,13 @@ public class ResponseBean<E> implements Serializable {
 
   public static <E> ResponseBean<E> customFail(String code, String message) {
     return new ResponseBean<>(code, message, null);
+  }
+
+  public static <E> ResponseBean<E> apply(E data) {
+    if (data == null) {
+      return notFound("暂无数据");
+    } else {
+      return success(data);
+    }
   }
 }
